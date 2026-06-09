@@ -1,12 +1,18 @@
 package com.example.demo.data;
 
 import org.junit.jupiter.api.Test;
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+=======
+import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.*;
+>>>>>>> 411517846fb0d8b88839359999dddf83a09fa7a0
 
 public class VoitureTest {
 
     @Test
+<<<<<<< HEAD
     void testConstructeurEtGetters() {
         String marqueAttendue = "Ferrari";
         int prixAttendu = 150000;
@@ -35,3 +41,24 @@ public class VoitureTest {
         assertEquals(attendu, resultat);
     }
 }
+=======
+    void testCreationEtGetters() {
+        Voiture voiture = new Voiture();
+        voiture.setId(1L);
+        voiture.setMarque("Renault");
+        voiture.setPrix(15000);
+        voiture.setEnPanne(false);
+        assertEquals(1L, voiture.getId());
+        assertEquals("Renault", voiture.getMarque());
+        assertEquals(15000, voiture.getPrix());
+        assertFalse(voiture.isEnPanne());
+    }
+
+    @Test
+    void testEchouer() {
+        Voiture voiture = new Voiture();
+        voiture.setMarque("Peugeot");
+        assertEquals("Citroen", voiture.getMarque(), "La marque ne correspond pas !");
+    }
+}
+>>>>>>> 411517846fb0d8b88839359999dddf83a09fa7a0
