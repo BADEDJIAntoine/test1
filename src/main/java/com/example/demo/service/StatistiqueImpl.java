@@ -1,31 +1,31 @@
 package com.example.demo.service;
 
 import com.example.demo.data.Voiture;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-@Service
-public class StatistiqueImpl implements Statistique{
-
-    List<Voiture> voitures = new ArrayList<Voiture>();
+public class StatistiqueImpl implements Statistique {
+    private final List<Voiture> voitures = new ArrayList<>();
 
     @Override
     public void ajouter(Voiture voiture) {
-        voitures.add(voiture);
+        if (voiture != null) {
+            voitures.add(voiture);
+        }
     }
 
     @Override
     public Echantillon prixMoyen() throws ArithmeticException {
-        int prixTotal = 0;
-        int nombreDeVoitures = 0;
-        Iterator<Voiture> iterator = voitures.iterator();
-        while(iterator.hasNext()){
-            prixTotal = prixTotal + iterator.next().getPrix();
-            nombreDeVoitures++;
+        if (voitures.isEmpty()) {
+            throw new ArithmeticException("Impossible de calculer la moyenne d'un échantillon vide.");
         }
-        return new Echantillon(nombreDeVoitures, prixTotal/nombreDeVoitures);
+
+        double somme = 0;
+        for (Voiture v : voitures) {
+            somme += v.getPrix(); // On suppose que Voiture a une méthode getPrix()
+        }
+
+        double moyenne = somme / voitures.size();
+        return new Echantillon(moyenne, voitures.size()); // On suppose le constructeur d'Echantillon
     }
 }

@@ -1,32 +1,38 @@
 package com.example.demo.web;
 
-import com.example.demo.data.Voiture;
-import com.example.demo.service.Echantillon;
-import com.example.demo.service.StatistiqueImpl;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WebTests {
-
-    @MockBean
-    StatistiqueImpl statistiqueImpl;
+public class WebTests {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-  
-
+    @Test
+    public void testAjouterVoitureEtCalculerStatistiques() throws Exception {
+        this.mockMvc.perform(post("/voiture")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"marque\":\"Ford\",\"prix\":20000}"))
+                .andExpect(status().isOk());
+        this.mockMvc.perform(post("/voiture")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"marque\":\"Peugeot\",\"prix\":10000}"))
+                .andExpect(status().isOk());
+        this.mockMvc.perform(get("/statistiques")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.valeurMoyenne").value(15000.0))
+                .andExpect(jsonPath("$.taille").value(2));
+    }
 }
