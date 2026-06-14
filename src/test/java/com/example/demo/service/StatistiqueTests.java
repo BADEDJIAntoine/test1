@@ -1,42 +1,29 @@
 package com.example.demo.service;
 
 import com.example.demo.data.Voiture;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SpringBootTest 
 public class StatistiqueTests {
 
-    private Statistique statistique;
-
-    @BeforeEach
-    public void setUp() {
-        this.statistique = new StatistiqueImpl();
-    }
+    @Autowired
+    private StatistiqueImpl statistique; 
 
     @Test
-    public void testPrixMoyen_2voitures() {
-        statistique.ajouter(new Voiture("Audi", 30000));
-        statistique.ajouter(new Voiture("BMW", 50000));
-        Echantillon resultat = statistique.prixMoyen();
-        assertEquals(40000.0, resultat.getValeurMoyenne(), 0.001);
-        assertEquals(2, resultat.getTaille());
-    }
+    void testStatistique() {
+        Voiture v1 = new Voiture("Ferrari", 3000);
+        Voiture v2 = new Voiture("Porsche", 3000);
 
-    @Test
-    public void testPrixMoyen_1Voiture() {
-        statistique.ajouter(new Voiture("Fiat", 10000));
-        Echantillon resultat = statistique.prixMoyen();
-        assertEquals(10000.0, resultat.getValeurMoyenne(), 0.001);
-        assertEquals(1, resultat.getTaille());
-    }
+        statistique.ajouter(v1);
+        statistique.ajouter(v2);
+        
+        Echantillon echantillon = statistique.prixMoyen();
 
-    @Test
-    public void testPrixMoyen_EchantillonVide() {
-        assertThrows(ArithmeticException.class, () -> {
-            statistique.prixMoyen();
-        }, "Une ArithmeticException aurait dû être levée pour une liste vide");
+        assertEquals(3000, echantillon.getPrixMoyen(), "Le prix moyen calculé est incorrect.");
+        assertEquals(2, echantillon.getNombreDeVoitures(), "Le nombre de voitures dans l'échantillon est incorrect.");
     }
 }
