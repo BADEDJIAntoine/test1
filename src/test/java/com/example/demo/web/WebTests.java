@@ -28,6 +28,7 @@ class WebTests {
 
     @Autowired
     MockMvc mockMvc;
+
     @Test
     void testCreerVoiture() throws Exception {
         String jsonBody = "{\"marque\":\"f\",\"prix\":100}";
@@ -37,6 +38,7 @@ class WebTests {
                 .content(jsonBody))
                 .andDo(print())
                 .andExpect(status().isOk());
+
         verify(statistiqueImpl, times(1)).ajouter(any(Voiture.class));
     }
 
@@ -51,7 +53,7 @@ class WebTests {
 
         verify(statistiqueImpl, times(1)).prixMoyen();
     }
-
+  
     @Test
     void testGetStatistiques_ArithmeticException() throws Exception {
         when(statistiqueImpl.prixMoyen()).thenThrow(new ArithmeticException());
