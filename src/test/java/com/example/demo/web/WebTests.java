@@ -27,6 +27,4 @@ class WebTests {
     @Autowired
     MockMvc mockMvc;
 
-  
-
 }
