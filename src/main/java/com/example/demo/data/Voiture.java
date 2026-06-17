@@ -1,11 +1,23 @@
 package com.example.demo.data;
 
+// On remplace jakarta.* par javax.*
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity 
 public class Voiture {
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    private int id; 
 
     String marque;
     int prix;
-    int id;
     int i;
+
+    // Le reste de ton code (constructeurs, getters, setters) reste EXACTEMENT le même !
 
     public Voiture(){
     }
